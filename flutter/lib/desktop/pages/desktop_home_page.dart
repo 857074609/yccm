@@ -70,129 +70,157 @@ class _DesktopHomePageState extends State<DesktopHomePage>
         block: _block, mask: true, use: canBeBlocked, child: child);
   }
 
-  Widget buildLeftPane(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: gFFI.serverModel,
-      child: Container(
-        width: 400,
-        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 30),
-        color: Theme.of(context).colorScheme.background,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // 标题
-            Text(
-              translate("Your Desktop"),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 8,
-              ),
-            ),
-            SizedBox(height: 50),
-            
-            // ID 显示框
-            Consumer<ServerModel>(
-              builder: (context, model, child) => Container(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [],
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      translate("ID"),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      model.serverId.text.isEmpty ? "--------" : model.serverId.text,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 28,
-                        letterSpacing: 2,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            
-            // 密码显示框
-            Consumer<ServerModel>(
-              builder: (context, model, child) => Container(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [],
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      translate("One-time Password"),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      model.serverPasswd.text.isEmpty ? "------" : model.serverPasswd.text,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 24,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 40),
-            
-            // 复制按钮
-            Consumer<ServerModel>(
-              builder: (context, model, child) => ElevatedButton(
-                onPressed: () {
-                  String copyText = '${model.serverId.text}\n${model.serverPasswd.text}';
-                  Clipboard.setData(ClipboardData(text: copyText));
-                  showToast(translate("Copied"));
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF1976D2),
-                  foregroundColor: Colors.white,
-                  minimumSize: Size(double.infinity, 56),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28),
-                  ),
-                  elevation: 0,
-                ),
-                child: Text(
-                  translate("复制"),
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 30),
-          ],
-        ),
+ Widget buildLeftPane(BuildContext context) {
+  return ChangeNotifierProvider.value(
+    value: gFFI.serverModel,
+    child: Container(
+      constraints: BoxConstraints(maxWidth: 360),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.92),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.4),
+            blurRadius: 8,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
-    );
-  }
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // 标题
+          Text(
+            translate("Your Desktop"),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(height: 18),
 
+          // ID 区域
+          Consumer<ServerModel>(
+            builder: (context, model, child) => Container(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              decoration: BoxDecoration(
+                color: Colors.grey[850],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    translate("ID"),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[400],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    model.serverId.text.isEmpty ? "--------" : model.serverId.text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 12),
+
+          // 密码区域
+          Consumer<ServerModel>(
+            builder: (context, model, child) => Container(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              decoration: BoxDecoration(
+                color: Colors.grey[850],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    translate("One-time Password"),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[400],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    model.serverPasswd.text.isEmpty ? "------" : model.serverPasswd.text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 18),
+
+          // 复制按钮（使用你项目已有的 MyElevatedButton 或自定义）
+          Consumer<ServerModel>(
+            builder: (context, model, child) => MyElevatedButton(
+              onPressed: () {
+                final text = '${model.serverId.text}\n${model.serverPasswd.text}';
+                Clipboard.setData(ClipboardData(text: text));
+                showToast(translate("Copied"));
+              },
+              child: Text(
+                translate("复制"),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ).paddingSymmetric(vertical: 4),
+          ),
+          SizedBox(height: 12),
+
+          // 就绪状态指示器
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              SizedBox(width: 4),
+              Text(
+                translate("Ready"),
+                style: TextStyle(
+                  color: Colors.green[400],
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
   buildRightPane(BuildContext context) {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
