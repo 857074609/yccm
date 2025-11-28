@@ -138,59 +138,68 @@ class _DesktopHomePageState extends State<DesktopHomePage>
           ),
           SizedBox(height: 12),
 
-          // 密码区域
+          // 密码区域（动态标签）
           Consumer<ServerModel>(
-            builder: (context, model, child) => Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.grey[850],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    translate("One-time Password"),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[400],
-                      fontWeight: FontWeight.w500,
+            builder: (context, model, child) {
+              final isPermanent = model.verificationMethod == kUsePermanentPassword;
+              final passwordLabel = isPermanent
+                  ? translate("Permanent Password")
+                  : translate("One-time Password");
+
+              return Container(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[850],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      passwordLabel,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[400],
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    model.serverPasswd.text.isEmpty ? "------" : model.serverPasswd.text,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                      letterSpacing: 1,
+                    SizedBox(height: 4),
+                    Text(
+                      model.serverPasswd.text.isEmpty ? "------" : model.serverPasswd.text,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        letterSpacing: 1,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
+                  ],
+                ),
+              );
+            },
           ),
           SizedBox(height: 18),
 
-          // 复制按钮（使用你项目已有的 MyElevatedButton 或自定义）
+          // 复制按钮
           Consumer<ServerModel>(
-            ElevatedButton(
-  style: ElevatedButton.styleFrom(
-    backgroundColor: const Color(0xFF2F65BA), // 使用 borderColor 或主题色
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-  ),
-  onPressed: () {
-    final text = '${model.serverId.text}\n${model.serverPasswd.text}';
-    Clipboard.setData(ClipboardData(text: text));
-    showToast(translate("Copied"));
-  },
-  child: Text(
-    translate("复制"),
-    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
-  ),
-).paddingSymmetric(vertical: 4),
+            builder: (context, model, child) {
+              return ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF2F65BA),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                ),
+                onPressed: () {
+                  final text = '${model.serverId.text}\n${model.serverPasswd.text}';
+                  Clipboard.setData(ClipboardData(text: text));
+                  showToast(translate("Copied"));
+                },
+                child: Text(
+                  translate("复制"),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                ),
+              ).paddingSymmetric(vertical: 4);
+            },
           ),
           SizedBox(height: 12),
 
