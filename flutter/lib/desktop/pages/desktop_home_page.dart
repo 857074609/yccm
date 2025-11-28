@@ -175,21 +175,22 @@ class _DesktopHomePageState extends State<DesktopHomePage>
 
           // 复制按钮（使用你项目已有的 MyElevatedButton 或自定义）
           Consumer<ServerModel>(
-            builder: (context, model, child) => MyElevatedButton(
-              onPressed: () {
-                final text = '${model.serverId.text}\n${model.serverPasswd.text}';
-                Clipboard.setData(ClipboardData(text: text));
-                showToast(translate("Copied"));
-              },
-              child: Text(
-                translate("复制"),
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-            ).paddingSymmetric(vertical: 4),
+            ElevatedButton(
+  style: ElevatedButton.styleFrom(
+    backgroundColor: const Color(0xFF2F65BA), // 使用 borderColor 或主题色
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+  ),
+  onPressed: () {
+    final text = '${model.serverId.text}\n${model.serverPasswd.text}';
+    Clipboard.setData(ClipboardData(text: text));
+    showToast(translate("Copied"));
+  },
+  child: Text(
+    translate("复制"),
+    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+  ),
+).paddingSymmetric(vertical: 4),
           ),
           SizedBox(height: 12),
 
