@@ -98,7 +98,7 @@ class _DesktopTabPageState extends State<DesktopTabPage> {
               controller: tabController,
                 ),
               ),
-            )));
+            );
     return isMacOS || kUseCompatibleUiMode
         ? tabWidget
         : Obx(
