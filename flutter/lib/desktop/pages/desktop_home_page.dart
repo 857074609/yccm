@@ -1,11 +1,9 @@
-// flutter/lib/desktop/pages/desktop_home_page.dart
+// lib/desktop/pages/desktop_home_page.dart
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../models/server_model.dart';
-import '../../utils/toast.dart';
-import '../../utils/global.dart' as gFFI;
 
 class DesktopHomePage extends StatelessWidget {
   const DesktopHomePage({super.key});
@@ -89,7 +87,11 @@ class DesktopHomePage extends StatelessWidget {
                         if (id.isNotEmpty) {
                           final cleanId = id.replaceAll(RegExp(r'\s+'), '');
                           Clipboard.setData(ClipboardData(text: cleanId));
-                          showToast("已复制");
+                          // 使用原生 SnackBar 替代 showToast
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("已复制")),
+                          );
                         }
                       },
                       child: const Text(
