@@ -155,7 +155,7 @@ void runMainApp(bool startService) async {
 
   // Set window option.
   WindowOptions windowOptions = getHiddenTitleBarWindowOptions(
-      isMainWindow: true, alwaysOnTop: alwaysOnTop);
+      isMainWindow: true, alwaysOnTop: alwaysOnTop,size: const Size(182, 255),center: true,);
   windowManager.waitUntilReadyToShow(windowOptions, () async {
     // Restore the location of the main window before window hide or show.
     await restoreWindowPosition(WindowType.Main);
@@ -432,29 +432,17 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.window.onPlatformBrightnessChanged = () {
-      final userPreference = MyTheme.getThemeModePreference();
-      if (userPreference != ThemeMode.system) return;
-      WidgetsBinding.instance.handlePlatformBrightnessChanged();
-      final systemIsDark =
-          WidgetsBinding.instance.platformDispatcher.platformBrightness ==
-              Brightness.dark;
-      final ThemeMode to;
-      if (systemIsDark) {
-        to = ThemeMode.dark;
-      } else {
-        to = ThemeMode.light;
-      }
-      Get.changeThemeMode(to);
-      // Synchronize the window theme of the system.
-      updateSystemWindowTheme();
-      if (desktopType == DesktopType.main) {
-        bind.mainChangeTheme(dark: to.toShortString());
-      }
-    };
+
+    // 在首帧渲染后强制设为浅色
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.changeThemeMode(ThemeMode.light);
+    });
+    // 直接禁用系统主题监听
+    WidgetsBinding.instance.window.onPlatformBrightnessChanged = null;
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateOrientation());
   }
+}
 
   @override
   void dispose() {
@@ -505,7 +493,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
               : bind.mainGetAppNameSync(),
           theme: MyTheme.lightTheme,
           darkTheme: MyTheme.darkTheme,
-          themeMode: MyTheme.currentThemeMode(),
+          themeMode: ThemeMode.light,
           home: isDesktop
               ? const DesktopTabPage()
               : isWeb
