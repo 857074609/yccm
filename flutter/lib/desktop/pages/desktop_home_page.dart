@@ -75,7 +75,7 @@ class _DesktopHomePageState extends State<DesktopHomePage>
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: const Color(0xFFE0E0E0),
+                  color: Colors.black87, // 修复：原色太浅，改为深灰黑
                 ),
               ),
             ),
@@ -95,7 +95,7 @@ class _DesktopHomePageState extends State<DesktopHomePage>
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black, // 深黑色
+                        color: Colors.black,
                         letterSpacing: 1.5,
                         fontFamily: 'Monospace',
                       ),
@@ -110,7 +110,7 @@ class _DesktopHomePageState extends State<DesktopHomePage>
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: SizedBox(
-              width: 160, // 宽度适中
+              width: 160,
               child: ElevatedButton(
                 onPressed: () {
                   final id = gFFI.serverModel.serverId.text;
@@ -119,7 +119,7 @@ class _DesktopHomePageState extends State<DesktopHomePage>
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFF5F5F5),
-                  foregroundColor: const Color(0xFFE0E0E0),
+                  foregroundColor: Colors.black87, // 修复：按钮文字颜色
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
@@ -136,7 +136,8 @@ class _DesktopHomePageState extends State<DesktopHomePage>
       ),
     );
   }
-}
+
+  // ========== 以下所有方法保持原样，未做任何修改 ==========
   buildRightPane(BuildContext context) {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
@@ -174,8 +175,7 @@ class _DesktopHomePageState extends State<DesktopHomePage>
                           style: TextStyle(
                               fontSize: 14,
                               color: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
+                                  .textTheme.titleLarge
                                   ?.color
                                   ?.withOpacity(0.5)),
                         ).marginOnly(top: 5),
