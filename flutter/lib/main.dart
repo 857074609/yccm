@@ -432,7 +432,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-
     // 在首帧渲染后强制设为浅色
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.changeThemeMode(ThemeMode.light);
@@ -442,7 +441,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateOrientation());
   }
-}
 
   @override
   void dispose() {
