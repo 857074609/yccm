@@ -55,88 +55,123 @@ class _DesktopHomePageState extends State<DesktopHomePage>
 
   final GlobalKey _childKey = GlobalKey();
 
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    
-    // ===== 仅重写 UI 返回结构 =====
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          // 1. 顶部标题栏：全屏宽度，左右无留空
-          Container(
-            width: double.infinity,
-            color: const Color(0xFFF5F5F5),
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Center(
-              child: Text(
-                "远程协助",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87, // 修复：原色太浅，改为深灰黑
-                ),
-              ),
-            ),
-          ),
-
-          // 2. 中央 ID 区域（弹性填充）
-          Expanded(
-            child: ChangeNotifierProvider.value(
-              value: gFFI.serverModel,
-              child: Consumer<ServerModel>(
-                builder: (context, model, child) {
-                  final displayId = model.serverId.text.isEmpty ? "--------" : model.serverId.text;
-                  return Center(
-                    child: Text(
-                      displayId,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                        letterSpacing: 1.5,
-                        fontFamily: 'Monospace',
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-
-          // 3. 底部复制按钮：宽度适中，居中
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: SizedBox(
-              width: 160,
-              child: ElevatedButton(
-                onPressed: () {
-                  final id = gFFI.serverModel.serverId.text;
-                  Clipboard.setData(ClipboardData(text: id));
-                  showToast("已复制");
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFF5F5F5),
-                  foregroundColor: Colors.black87, // 修复：按钮文字颜色
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
+@override
+Widget build(BuildContext context) {
+  super.build(context);
+  return Scaffold(
+    backgroundColor: Colors.white,
+    body: Stack(
+      children: [
+        Column(
+          children: [
+            // 🔹 顶部横幅标题栏（保留）
+            Container(
+              width: double.infinity,
+              color: const Color(0xFFF5F5F5),
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Center(
+                child: Text(
+                  "远程协助",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
                   ),
                 ),
-                child: const Text(
-                  "复制",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+            ),
+
+            // 🔸 主体：居中内容
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // 💚 绿色按钮 + 高速闪烁动态效果
+                    AnimatedBuilder(
+                      animation: _flashController!,
+                      builder: (context, child) {
+                        final value = _flashController!.value;
+                        final pulse = value < 0.5 ? value * 2 : (1 - value) * 2;
+                        return Transform.scale(
+                          scale: 1 + pulse * 0.06,
+                          child: Opacity(
+                            opacity: 0.9 + pulse * 0.1,
+                            child: SizedBox(
+                              width: 300,
+                              height: 60,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  final id = gFFI.serverModel.serverId.text;
+                                  Clipboard.setData(ClipboardData(text: id));
+                                  showToast("已复制");
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                  ),
+                                  elevation: 0,
+                                ),
+                                child: const Text(
+                                  "复制",
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+
+                    // 👇 小手指图标
+                    const Icon(
+                      Icons.touch_app_outlined,
+                      size: 24,
+                      color: Colors.grey,
+                    ).marginOnly(top: 18),
+
+                    // ❤️ 红色副标题
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 36.0),
+                      child: Text(
+                        "请点击复制按钮获取ID\n通过社交平台发送给技术人员\n以便技术员控制您的电脑处理故障问题",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.red,
+                          height: 1.4,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ).marginOnly(top: 12),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
 
+        // 🔴 右下角水印
+        Align(
+          alignment: Alignment.bottomRight,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text(
+              "小马哥制作 安全可靠值得信赖",
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.red,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
   // ========== 以下所有方法保持原样，未做任何修改 ==========
   buildRightPane(BuildContext context) {
     return Container(
