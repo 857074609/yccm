@@ -37,6 +37,8 @@ const borderColor = Color(0xFF2F65BA);
 class _DesktopHomePageState extends State<DesktopHomePage>
     with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
   final _leftPaneScrollController = ScrollController();
+  //添加一个按钮动态特效动画
+  late AnimationController _flashController;
 
   @override
   bool get wantKeepAlive => true;
@@ -426,6 +428,11 @@ Widget build(BuildContext context) {
       if (systemError != error) {
         systemError = error;
         setState(() {});
+      // >>> 新增：高速绿色按钮闪烁动画 <<<
+   _flashController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 280), // 极高速闪烁
+  )..repeat();
       }
       final v = await mainGetBoolOption(kOptionStopService);
       if (v != svcStopped.value) {
@@ -579,6 +586,7 @@ Widget build(BuildContext context) {
 
   @override
   void dispose() {
+    _flashController.dispose(); // <<< 新增绿色按钮特性
     _uniLinksSubscription?.cancel();
     Get.delete<RxBool>(tag: 'stop-service');
     _updateTimer?.cancel();
