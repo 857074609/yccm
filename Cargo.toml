@@ -1,10 +1,10 @@
 [package]
 name = "LnDesk"
 version = "****"
-authors = ["rustdesk <info@rustdesk.com>"]
+authors = ["LnDesk"]
 edition = "2021"
 build= "build.rs"
-description = "RustDesk Remote Desktop"
+description = "******"
 default-run = "rustdesk"
 rust-version = "1.75"
 
@@ -13,7 +13,7 @@ name = "librustdesk"
 crate-type = ["cdylib", "staticlib", "rlib"]
 
 [[bin]]
-name = "naming"
+name = "LnDesk"
 path = "src/naming.rs"
 
 [[bin]]
