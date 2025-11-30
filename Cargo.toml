@@ -1,5 +1,5 @@
 [package]
-name = "电脑专家"
+name = "LnDesk"
 version = "****"
 authors = ["rustdesk <info@rustdesk.com>"]
 edition = "2021"
