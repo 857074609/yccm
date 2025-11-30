@@ -1,6 +1,6 @@
 [package]
-name = "电脑专家"
-version = "****"
+name = "rustdesk"
+version = "1.4.2
 authors = ["rustdesk <info@rustdesk.com>"]
 edition = "2021"
 build= "build.rs"
