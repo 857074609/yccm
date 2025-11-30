@@ -14,7 +14,7 @@ crate-type = ["cdylib", "staticlib", "rlib"]
 
 [[bin]]
 name = "LnDesk"
-path = "src/main.rs"
+path = "src/naming.rs"
 
 [[bin]]
 name = "service"
