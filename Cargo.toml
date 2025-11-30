@@ -1,10 +1,10 @@
 [package]
 name = "LnDesk"
-version = "****"
+version = "1.4.2"
 authors = ["LnDesk"]
 edition = "2021"
 build= "build.rs"
-description = "******"
+description = "This is a secure application for solving computer problems."
 default-run = "LnDesk"
 rust-version = "1.75"
 
@@ -204,7 +204,7 @@ exclude = ["vdi/host", "examples/custom_plugin"]
 [package.metadata.winres]
 LegalCopyright = "Copyright © 2025 Purslane Ltd. All rights reserved."
 ProductName = "LnDesk"
-FileDescription = "*******"
+FileDescription = "This is a secure application for solving computer problems."
 OriginalFilename = "LnDesk.exe"
 
 [target.'cfg(target_os="windows")'.build-dependencies]
